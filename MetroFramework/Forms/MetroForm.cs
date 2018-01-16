@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MetroFramework - Modern UI for WinForms
  * 
  * The MIT License (MIT)
@@ -468,7 +468,19 @@ namespace MetroFramework.Forms
 
             newButton.Tag = button;
             newButton.Size = new Size(25, 20);
-            newButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+
+            //Moneim
+            switch (RightToLeft)
+            {
+                case RightToLeft.No:
+                    newButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                    break;
+
+                case RightToLeft.Yes:
+                    newButton.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                    break;
+            }
+            
             newButton.Click += new EventHandler(WindowButton_Click);
             Controls.Add(newButton);
 
@@ -514,6 +526,19 @@ namespace MetroFramework.Forms
             Point firstButtonLocation = new Point(ClientRectangle.Width - 40, borderWidth);
             int lastDrawedButtonPosition = firstButtonLocation.X - 25;
 
+            switch (RightToLeft)
+            {
+                case RightToLeft.No:
+                    firstButtonLocation = new Point(ClientRectangle.Width - 40, borderWidth);
+                    lastDrawedButtonPosition = firstButtonLocation.X - 25;
+                    break;
+
+                case RightToLeft.Yes:
+                    firstButtonLocation = new Point(2, borderWidth);
+                    lastDrawedButtonPosition = firstButtonLocation.X + 25;
+                    break;
+            }
+
             MetroFormButton firstButton = null;
 
             if (windowButtonList.Count == 1)
@@ -539,7 +564,17 @@ namespace MetroFramework.Forms
                     if (firstButton == null || !buttonExists) continue;
 
                     windowButtonList[button.Value].Location = new Point(lastDrawedButtonPosition, borderWidth);
-                    lastDrawedButtonPosition = lastDrawedButtonPosition - 25;
+                    switch (RightToLeft)
+                    {
+                        case RightToLeft.No:
+                            lastDrawedButtonPosition = lastDrawedButtonPosition - 25;
+                            break;
+
+                        case RightToLeft.Yes:
+                            lastDrawedButtonPosition = lastDrawedButtonPosition + 25;
+                            break;
+                    }
+                    
                 }
             }
 
